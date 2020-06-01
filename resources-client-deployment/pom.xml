@@ -16,10 +16,13 @@
 	
 	<properties>
 		<cyk.variable.system.identifier>resources</cyk.variable.system.identifier>
-		<cyk.variable.system.name>resources</cyk.variable.system.name>
+		<cyk.variable.system.name>Resources</cyk.variable.system.name>
 		<cyk.variable.system.logging.throwable.print.stack.trace>true</cyk.variable.system.logging.throwable.print.stack.trace>
 		<!-- Theme -->
-		<cyk.variable.user.interface.theme.menu.identifier>XX.MENU.IDENTIFIER.XX</cyk.variable.user.interface.theme.menu.identifier>
+		<cyk.variable.user.interface.theme.primefaces>atlantis-blue</cyk.variable.user.interface.theme.primefaces>
+		<cyk.variable.user.interface.theme.class.name>org.cyk.user.interface_.theme.web.jsf.primefaces.atlantis.dgbf.DesktopDefault</cyk.variable.user.interface.theme.class.name>
+		<cyk.variable.user.interface.theme.jsf.contract>org.cyk.jee.user.interface.theme.web.jsf.primefaces.atlantis.dgbf.desktop.default</cyk.variable.user.interface.theme.jsf.contract>
+		<cyk.variable.user.interface.theme.menu.identifier>COLB</cyk.variable.user.interface.theme.menu.identifier>
 
 		<!-- Development -->
 
@@ -70,7 +73,7 @@
 		<profile>
 			<id>docker</id>
 			<properties>
-				<jboss-web.context-root></jboss-web.context-root>
+				<jboss-web.context-root>/sib/resources</jboss-web.context-root>
 			</properties>
 		</profile>
 		
@@ -85,7 +88,8 @@
 		<profile>
 			<id>docker.prod</id>
 			<properties>
-				
+				<deployment.client.proxy.host>mic-${cyk.variable.system.identifier}-api</deployment.client.proxy.host>
+				<cyk.variable.user.interface.theme.menu.is.dynamic>true</cyk.variable.user.interface.theme.menu.is.dynamic>
 			</properties>
 		</profile>
 	</profiles>	
