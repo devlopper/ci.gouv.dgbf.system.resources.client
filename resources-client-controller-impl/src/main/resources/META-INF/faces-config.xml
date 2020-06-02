@@ -2,19 +2,26 @@
 <faces-config version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
-
-	<!-- Do use PrettyFaces ONLY for navigation -->
-
+	
 	<navigation-rule>
 		<from-view-id>*</from-view-id>
 		
-		<!-- xxx -->
-		<!--navigation-case>
-			<from-outcome>xxxView</from-outcome>
-			<to-view-id></to-view-id>
+		<navigation-case>
+			<from-outcome>budgetaryActVersionSelectView</from-outcome>
+			<to-view-id>/private/budgetaryactversion/select.jsf</to-view-id>
 			<redirect />
-		</navigation-case-->
+		</navigation-case>
+	
+		<navigation-case>
+			<from-outcome>resourceCreateView</from-outcome>
+			<to-view-id>/private/resource/create.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
 		
+		<navigation-case>
+			<from-outcome>resourceEditInitialsView</from-outcome>
+			<to-view-id>/private/resource/editinitials.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
 	</navigation-rule>
-
 </faces-config>

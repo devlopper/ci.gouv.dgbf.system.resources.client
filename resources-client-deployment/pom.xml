@@ -23,6 +23,7 @@
 		<cyk.variable.user.interface.theme.class.name>org.cyk.user.interface_.theme.web.jsf.primefaces.atlantis.dgbf.DesktopDefault</cyk.variable.user.interface.theme.class.name>
 		<cyk.variable.user.interface.theme.jsf.contract>org.cyk.jee.user.interface.theme.web.jsf.primefaces.atlantis.dgbf.desktop.default</cyk.variable.user.interface.theme.jsf.contract>
 		<cyk.variable.user.interface.theme.menu.identifier>COLB</cyk.variable.user.interface.theme.menu.identifier>
+		<cyk.variable.user.interface.theme.menu.is.dynamic>false</cyk.variable.user.interface.theme.menu.is.dynamic>
 
 		<!-- Development -->
 

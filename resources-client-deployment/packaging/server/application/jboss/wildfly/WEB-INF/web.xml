@@ -6,6 +6,10 @@
 	
 	<display-name>${cyk.variable.system.name}</display-name>
 	
+	<welcome-file-list>
+		<welcome-file>/private/resource/editinitials.jsf</welcome-file>
+	</welcome-file-list>
+	
 	<!-- System -->
 	
 	<context-param>
