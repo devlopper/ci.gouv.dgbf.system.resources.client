@@ -1,0 +1,54 @@
+Publishing with time stamp : 202006021706 
+The push refers to repository [10.3.4.18:5000/mic-resources]
+Publishing with time stamp : 202006021709 
+The push refers to repository [10.3.4.18:5000/mic-resources]
+c8c03f9a4b93: Preparing
+63e544b5d125: Preparing
+13f0b213c32d: Preparing
+849cb74592b3: Preparing
+f1b5933fe4b5: Preparing
+849cb74592b3: Mounted from mic-resources-api
+13f0b213c32d: Mounted from mic-resources-api
+f1b5933fe4b5: Mounted from mic-resources-api
+c8c03f9a4b93: Pushed
+63e544b5d125: Pushed
+202006021709: digest: sha256:fac2619f3629b5601eff71def864b0241fd1b216dbb17939d64e780069853752 size: 1376
+Publishing with time stamp : 202006031039 
+The push refers to repository [10.3.4.18:5000/mic-resources]
+c8c03f9a4b93: Preparing
+63e544b5d125: Preparing
+13f0b213c32d: Preparing
+849cb74592b3: Preparing
+f1b5933fe4b5: Preparing
+849cb74592b3: Layer already exists
+c8c03f9a4b93: Layer already exists
+13f0b213c32d: Layer already exists
+f1b5933fe4b5: Layer already exists
+63e544b5d125: Layer already exists
+202006031039: digest: sha256:fac2619f3629b5601eff71def864b0241fd1b216dbb17939d64e780069853752 size: 1376
+Publishing with time stamp : 202006031051 
+The push refers to repository [10.3.4.18:5000/mic-resources]
+fdfe2b280ad3: Preparing
+63e544b5d125: Preparing
+13f0b213c32d: Preparing
+849cb74592b3: Preparing
+f1b5933fe4b5: Preparing
+13f0b213c32d: Layer already exists
+849cb74592b3: Layer already exists
+63e544b5d125: Layer already exists
+f1b5933fe4b5: Layer already exists
+fdfe2b280ad3: Pushed
+202006031051: digest: sha256:393e2b7e6cd4f187ea835f5a1415e44a3137d562e4d109970aafc671b42abc38 size: 1376
+Publishing with time stamp : 202006031628 
+The push refers to repository [10.3.4.18:5000/mic-resources]
+60e979f9eb99: Preparing
+63e544b5d125: Preparing
+13f0b213c32d: Preparing
+849cb74592b3: Preparing
+f1b5933fe4b5: Preparing
+63e544b5d125: Layer already exists
+13f0b213c32d: Layer already exists
+849cb74592b3: Layer already exists
+f1b5933fe4b5: Layer already exists
+60e979f9eb99: Pushed
+202006031628: digest: sha256:606ad1a64a5fa66cbbaf466bd8c30902575ff7c3c7fec6a1bbeb2ac808ef069f size: 1376

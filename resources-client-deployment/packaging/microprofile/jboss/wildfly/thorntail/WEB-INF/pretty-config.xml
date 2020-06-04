@@ -1,0 +1,16 @@
+<pretty-config xmlns="http://ocpsoft.org/schema/rewrite-config-prettyfaces" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://ocpsoft.org/schema/rewrite-config-prettyfaces
+                      http://ocpsoft.org/xml/ns/prettyfaces/rewrite-config-prettyfaces.xsd">
+
+	<url-mapping id="select_budgetary_act_version">
+		<pattern value="/resource/choix/version" />
+		<view-id value="/private/budgetaryactversion/select.jsf" />
+	</url-mapping>
+
+	<url-mapping id="edit_resource_initials">
+		<pattern value="/resource/saisie/initial" />
+		<view-id value="/private/resource/editinitials.jsf" />
+	</url-mapping>
+
+</pretty-config>

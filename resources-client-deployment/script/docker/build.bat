@@ -1,1 +1,1 @@
-docker build --tag "resources-client:latest" ../../
+docker build --tag "mic-resources:latest" ../../
