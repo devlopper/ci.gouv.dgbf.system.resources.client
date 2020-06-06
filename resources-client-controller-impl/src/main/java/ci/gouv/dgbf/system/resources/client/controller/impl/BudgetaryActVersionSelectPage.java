@@ -40,25 +40,30 @@ public class BudgetaryActVersionSelectPage extends AbstractPageContainerManagedI
 	protected void __listenPostConstruct__() {
 		actionIdentifier = WebController.getInstance().getRequestParameter(ParameterName.ACTION_IDENTIFIER.getValue());
 		super.__listenPostConstruct__();
-		budgetaryActVersionSelectOneCombo = SelectOneCombo.build(SelectOneCombo.FIELD_CHOICE_CLASS,BudgetaryActVersion.class,SelectOneCombo.FIELD_CHOICES
-				,EntityReader.getInstance().readMany(BudgetaryActVersion.class, new Arguments<BudgetaryActVersion>()
-						.setRepresentationArguments(new org.cyk.utility.__kernel__.representation.Arguments()
-								.setQueryExecutorArguments(new QueryExecutorArguments.Dto().setQueryIdentifier(BudgetaryActVersionQuerier.QUERY_IDENTIFIER_READ_ALL_01)
-										))) ,SelectOneCombo.ConfiguratorImpl.FIELD_OUTPUT_LABEL_VALUE,"Version")/*.enableAjaxItemSelect()*/;
-		//actionPlanAutoComplete = AutoComplete.build(AutoComplete.FIELD_ENTITY_CLASS,ActionPlan.class).useQueryIdentifiersFiltersLike().enableAjaxItemSelect().listenComplete(producerAutoComplete);
-		//activityAutoComplete = AutoComplete.build(AutoComplete.FIELD_ENTITY_CLASS,Activity.class).useQueryIdentifiersFiltersLike().enableAjaxItemSelect().listenComplete(actionPlanAutoComplete);
-		//costUnitAutoComplete = AutoComplete.build(AutoComplete.FIELD_ENTITY_CLASS,CostUnit.class).useQueryIdentifiersFiltersLike().enableAjaxItemSelect().listenComplete(activityAutoComplete);
-		layout = Layout.build(Layout.FIELD_CELL_WIDTH_UNIT,Cell.WidthUnit.UI_G
-				,Layout.FIELD_NUMBER_OF_COLUMNS,2,Layout.FIELD_ROW_CELL_MODEL,Map.of(0,new Cell().setWidth(2),1,new Cell().setWidth(10))
-				,Layout.ConfiguratorImpl.FIELD_CELLS_MAPS,CollectionHelper.listOf(
-					MapHelper.instantiate(Cell.FIELD_CONTROL,budgetaryActVersionSelectOneCombo.getOutputLabel()),MapHelper.instantiate(Cell.FIELD_CONTROL,budgetaryActVersionSelectOneCombo)
-					//,MapHelper.instantiate(Cell.FIELD_CONTROL,actionPlanAutoComplete.getOutputLabel()),MapHelper.instantiate(Cell.FIELD_CONTROL,actionPlanAutoComplete)
-					//,MapHelper.instantiate(Cell.FIELD_CONTROL,activityAutoComplete.getOutputLabel()),MapHelper.instantiate(Cell.FIELD_CONTROL,activityAutoComplete)
-					//,MapHelper.instantiate(Cell.FIELD_CONTROL,costUnitAutoComplete.getOutputLabel()),MapHelper.instantiate(Cell.FIELD_CONTROL,costUnitAutoComplete)
-					
-					,MapHelper.instantiate(Cell.ConfiguratorImpl.FIELD_CONTROL_COMMAND_BUTTON_ARGUMENTS,MapHelper.instantiate(CommandButton.ConfiguratorImpl.FIELD_OBJECT,this
-							,CommandButton.ConfiguratorImpl.FIELD_METHOD_NAME,"select"))
-				));
+		try {
+			budgetaryActVersionSelectOneCombo = SelectOneCombo.build(SelectOneCombo.FIELD_CHOICE_CLASS,BudgetaryActVersion.class,SelectOneCombo.FIELD_CHOICES
+					,EntityReader.getInstance().readMany(BudgetaryActVersion.class, new Arguments<BudgetaryActVersion>()
+							.setRepresentationArguments(new org.cyk.utility.__kernel__.representation.Arguments()
+									.setQueryExecutorArguments(new QueryExecutorArguments.Dto().setQueryIdentifier(BudgetaryActVersionQuerier.QUERY_IDENTIFIER_READ_ALL_01)
+											))) ,SelectOneCombo.ConfiguratorImpl.FIELD_OUTPUT_LABEL_VALUE,"Version")/*.enableAjaxItemSelect()*/;
+			//actionPlanAutoComplete = AutoComplete.build(AutoComplete.FIELD_ENTITY_CLASS,ActionPlan.class).useQueryIdentifiersFiltersLike().enableAjaxItemSelect().listenComplete(producerAutoComplete);
+			//activityAutoComplete = AutoComplete.build(AutoComplete.FIELD_ENTITY_CLASS,Activity.class).useQueryIdentifiersFiltersLike().enableAjaxItemSelect().listenComplete(actionPlanAutoComplete);
+			//costUnitAutoComplete = AutoComplete.build(AutoComplete.FIELD_ENTITY_CLASS,CostUnit.class).useQueryIdentifiersFiltersLike().enableAjaxItemSelect().listenComplete(activityAutoComplete);
+			layout = Layout.build(Layout.FIELD_CELL_WIDTH_UNIT,Cell.WidthUnit.UI_G
+					,Layout.FIELD_NUMBER_OF_COLUMNS,2,Layout.FIELD_ROW_CELL_MODEL,Map.of(0,new Cell().setWidth(2),1,new Cell().setWidth(10))
+					,Layout.ConfiguratorImpl.FIELD_CELLS_MAPS,CollectionHelper.listOf(
+						MapHelper.instantiate(Cell.FIELD_CONTROL,budgetaryActVersionSelectOneCombo.getOutputLabel()),MapHelper.instantiate(Cell.FIELD_CONTROL,budgetaryActVersionSelectOneCombo)
+						//,MapHelper.instantiate(Cell.FIELD_CONTROL,actionPlanAutoComplete.getOutputLabel()),MapHelper.instantiate(Cell.FIELD_CONTROL,actionPlanAutoComplete)
+						//,MapHelper.instantiate(Cell.FIELD_CONTROL,activityAutoComplete.getOutputLabel()),MapHelper.instantiate(Cell.FIELD_CONTROL,activityAutoComplete)
+						//,MapHelper.instantiate(Cell.FIELD_CONTROL,costUnitAutoComplete.getOutputLabel()),MapHelper.instantiate(Cell.FIELD_CONTROL,costUnitAutoComplete)
+						
+						,MapHelper.instantiate(Cell.ConfiguratorImpl.FIELD_CONTROL_COMMAND_BUTTON_ARGUMENTS,MapHelper.instantiate(CommandButton.ConfiguratorImpl.FIELD_OBJECT,this
+								,CommandButton.ConfiguratorImpl.FIELD_METHOD_NAME,"select"))
+					));
+		}catch(Exception exception) {
+			exception.printStackTrace();
+		}
+		
 	}
 	
 	public void select() {
