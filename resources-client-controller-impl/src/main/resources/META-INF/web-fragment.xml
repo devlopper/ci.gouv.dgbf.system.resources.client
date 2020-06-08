@@ -1,68 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-fragment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:web="http://xmlns.jcp.org/xml/ns/javaee" xmlns:webfragment="http://java.sun.com/xml/ns/javaee/web-fragment_3_0.xsd"
-	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
-	
-	<!--
-	<display-name>${cyk.variable.system.name}</display-name>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	id="WebApp_ID" version="3.1">
 	
 	<welcome-file-list>
 		<welcome-file>/private/resource/editinitials.jsf</welcome-file>
 	</welcome-file-list>
-	-->
+
 	<!-- System -->
-	
+
 	<context-param>
 		<param-name>cyk.variable.system.identifier</param-name>
-		<param-value>${cyk.variable.system.identifier}</param-value>
+		<param-value>resources</param-value>
 	</context-param>
 	
 	<context-param>
 		<param-name>cyk.variable.system.name</param-name>
-		<param-value>${cyk.variable.system.name}</param-value>
+		<param-value>Gestion des Ressources</param-value>
 	</context-param>
 	
 	<context-param>
 		<param-name>cyk.variable.system.proxy.uniform.resource.identifier</param-name>
-		<param-value>${cyk.variable.system.proxy.uniform.resource.identifier}</param-value>
+		<param-value>http://mic-resources-api:80/api</param-value>
 	</context-param>
 	
 	<context-param>
 		<param-name>cyk.variable.user.interface.theme.class.name</param-name>
-		<param-value>${cyk.variable.user.interface.theme.class.name}</param-value>
+		<param-value>org.cyk.user.interface_.theme.web.jsf.primefaces.atlantis.dgbf.DesktopDefault</param-value>
 	</context-param>
 	
 	<context-param>
 		<param-name>cyk.variable.user.interface.theme.jsf.contract</param-name>
-		<param-value>${cyk.variable.user.interface.theme.jsf.contract}</param-value>
+		<param-value>org.cyk.jee.user.interface.theme.web.jsf.primefaces.atlantis.dgbf.desktop.default</param-value>
 	</context-param>
 	
 	<context-param>
 		<param-name>cyk.variable.user.interface.theme.primefaces</param-name>
-		<param-value>${cyk.variable.user.interface.theme.primefaces}</param-value>
+		<param-value>atlantis-blue</param-value>
 	</context-param>
 	
 	<!-- Static resources -->
 	
 	<!-- Favicon -->
-	<!--
+	
 	<context-param>
 		<param-name>cyk.variable.user.interface.theme.favicon.file.folder</param-name>
-		<param-value>${cyk.variable.user.interface.theme.favicon.file.folder}</param-value>
+		<param-value>image</param-value>
 	</context-param>
 	
 	<context-param>
 		<param-name>cyk.variable.user.interface.theme.favicon.file.name.prefix</param-name>
-		<param-value>${cyk.variable.user.interface.theme.favicon.file.name.prefix}</param-value>
+		<param-value>favicon</param-value>
 	</context-param>
 	
 	<context-param>
 		<param-name>cyk.variable.user.interface.theme.favicon.file.name.extension</param-name>
-		<param-value>${cyk.variable.user.interface.theme.favicon.file.name.extension}</param-value>
+		<param-value>png</param-value>
 	</context-param>
-	-->
+
 	<!-- Logo -->
-	<!--
+	
 	<context-param>
 		<param-name>cyk.variable.user.interface.theme.logo.file.resources.folder</param-name>
 		<param-value>${cyk.variable.user.interface.theme.logo.file.resources.folder}</param-value>
@@ -70,18 +68,17 @@
 	
 	<context-param>
 		<param-name>cyk.variable.user.interface.theme.logo.file.folder</param-name>
-		<param-value>${cyk.variable.user.interface.theme.logo.file.folder}</param-value>
+		<param-value>image</param-value>
 	</context-param>
 	
 	<context-param>
 		<param-name>cyk.variable.user.interface.theme.logo.file.name.prefix</param-name>
-		<param-value>${cyk.variable.user.interface.theme.logo.file.name.prefix}</param-value>
+		<param-value>logo</param-value>
 	</context-param>
 	
 	<context-param>
 		<param-name>cyk.variable.user.interface.theme.logo.file.name.extension</param-name>
-		<param-value>${cyk.variable.user.interface.theme.logo.file.name.extension}</param-value>
+		<param-value>png</param-value>
 	</context-param>
-	-->
 	
-</web-fragment>
+</web-app>

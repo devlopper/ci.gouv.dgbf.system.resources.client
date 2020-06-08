@@ -113,9 +113,9 @@ public class ResourceEditInitialsPage extends AbstractPageContainerManagedImpl i
 					return null;
 				Activity activity = (Activity) activitySelectOne.getValue();
 				QueryExecutorArguments.Dto queryExecutorArguments = new QueryExecutorArguments.Dto()
-						.addFilterField(ResourceByActivityQuerier.PARAMETER_NAME_ACTIVITIES_CODES, List.of(activity.getCode()))
+						.addFilterField(ResourceByActivityQuerier.PARAMETER_NAME_ACTIVITY_CODE, activity.getCode())
 						.addFilterField(ResourceByActivityQuerier.PARAMETER_NAME_BUDGETARY_ACT_VERSION_CODE, budgetaryActVersion.getCode());
-				queryExecutorArguments.setQueryIdentifier(ResourceByActivityQuerier.QUERY_IDENTIFIER_READ_BY_ACTIVITIES_CODES_BY_BUDGETARY_ACT_VERSION_CODE);				
+				queryExecutorArguments.setQueryIdentifier(ResourceByActivityQuerier.QUERY_IDENTIFIER_READ_BY_ACTIVITY_CODE_BY_BUDGETARY_ACT_VERSION_CODE);				
 				return new Arguments<Resource>()
 						.setRepresentationArguments(new org.cyk.utility.__kernel__.representation.Arguments().setQueryExecutorArguments(queryExecutorArguments));
 			}
@@ -147,11 +147,9 @@ public class ResourceEditInitialsPage extends AbstractPageContainerManagedImpl i
 			@Override
 			public void select(AbstractInputChoiceOne input, Activity activity) {
 				super.select(input, activity);
-				if(resourcesDataTable != null) {
-					if(activity != null) {
-						//resourcesDataTable.setColumnsFootersValuesFromMaster(activity);
-						//resourcesDataTable.updateColumnsFooters();
-					}
+				if(resourcesDataTable != null) {					
+					resourcesDataTable.setColumnsFootersValuesFromMaster(activity);
+					resourcesDataTable.updateColumnsFooters();					
 				}						
 			}
 		});
@@ -202,15 +200,20 @@ public class ResourceEditInitialsPage extends AbstractPageContainerManagedImpl i
 			@Override
 			public void select(AbstractInputChoiceOne input, BudgetSpecializationUnit budgetSpecializationUnit) {
 				super.select(input, budgetSpecializationUnit);
-				if(activitySelectOne != null) {
+				if(activitySelectOne != null) {					
 					activitySelectOne.setChoicesInitialized(Boolean.TRUE);
-					activitySelectOne.updateChoices();	
-					if(selectedResource != null)
-						activitySelectOne.selectBySystemIdentifier(selectedResource.getActivity().getIdentifier());
-					else if(selectedActivity != null)
-						activitySelectOne.selectBySystemIdentifier(selectedActivity.getIdentifier());
-					else
-						activitySelectOne.selectFirstChoice();
+					activitySelectOne.updateChoices();
+					if(CollectionHelper.isEmpty(activitySelectOne.getChoices())) {
+						activitySelectOne.select(null);
+					}else {
+						if(selectedResource != null)
+							activitySelectOne.selectBySystemIdentifier(selectedResource.getActivity().getIdentifier());
+						else if(selectedActivity != null)
+							activitySelectOne.selectBySystemIdentifier(selectedActivity.getIdentifier());
+						else
+							activitySelectOne.selectFirstChoice();	
+					}
+					
 				}
 			}
 		});
