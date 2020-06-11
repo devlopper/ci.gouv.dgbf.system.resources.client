@@ -66,6 +66,8 @@ import lombok.Setter;
 public class ResourceEditInitialsPage extends AbstractPageContainerManagedImpl implements Serializable {
 				
 	private BudgetaryActVersion budgetaryActVersion;
+	private Collection<Section> sections;
+	
 	private Layout layout;
 	private SelectOneCombo sectionSelectOne,budgetSpecializationUnitSelectOne,activitySelectOne;
 	private AutoComplete activityAutoComplete;
@@ -84,6 +86,12 @@ public class ResourceEditInitialsPage extends AbstractPageContainerManagedImpl i
 	protected void __listenPostConstruct__() {
 		try {
 			budgetaryActVersion = WebController.getInstance().getRequestParameterEntityAsParent(BudgetaryActVersion.class);
+			sections = EntityReader.getInstance().readMany(Section.class, new Arguments<Section>()
+					.setRepresentationArguments(new org.cyk.utility.__kernel__.representation.Arguments()
+							.setQueryExecutorArguments(new QueryExecutorArguments.Dto()
+									.setQueryIdentifier(SectionQuerier.QUERY_IDENTIFIER_READ_AGGREGATION_BY_BUDGETARY_ACT_VERSION_CODE_ORDER_BY_CODE_ASCENDING)
+									.addFilterField(SectionQuerier.PARAMETER_NAME_BUDGETARY_ACT_VERSION_CODE, budgetaryActVersion.getCode())
+									)));
 		} catch (Exception exception) {
 			LogHelper.log(exception, getClass());
 			return;
@@ -219,13 +227,6 @@ public class ResourceEditInitialsPage extends AbstractPageContainerManagedImpl i
 		});
 		budgetSpecializationUnitSelectOne.enableValueChangeListener(List.of(activitySelectOne,resourcesDataTable));
 		
-		Collection<Section> sections = EntityReader.getInstance().readMany(Section.class, new Arguments<Section>()
-				.setRepresentationArguments(new org.cyk.utility.__kernel__.representation.Arguments()
-						.setQueryExecutorArguments(new QueryExecutorArguments.Dto()
-								.setQueryIdentifier(SectionQuerier.QUERY_IDENTIFIER_READ_AGGREGATION_BY_BUDGETARY_ACT_VERSION_CODE_ORDER_BY_CODE_ASCENDING)
-								.addFilterField(SectionQuerier.PARAMETER_NAME_BUDGETARY_ACT_VERSION_CODE, budgetaryActVersion.getCode())
-								)));
-
 		sectionSelectOne = SelectOneCombo.build(SelectOneCombo.FIELD_CHOICE_CLASS,Section.class,SelectOneCombo.FIELD_CHOICES,sections
 				,SelectOneCombo.FIELD_LISTENER,new SelectOneCombo.Listener.AbstractImpl<Section>() {	
 			@Override
