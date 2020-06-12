@@ -76,8 +76,6 @@ public class ResourceEditInitialsPage extends AbstractPageContainerManagedImpl i
 	private Activity selectedActivity;
 	private Resource selectedResource;
 	private Collection<Resource> resources;
-	private Collection<BudgetSpecializationUnitCategory> budgetSpecializationUnitCategories,budgetSpecializationUnitCategoriesBySection;
-	private BudgetSpecializationUnitCategory budgetSpecializationUnitCategoryBySectionTotal;
 	private Map<String,Long> initialAdjustments = new HashMap<>();
 	private String budgetSpecializationUnitCategoriesDashboardOutputPanelIdentifier ="budgetSpecializationUnitCategoriesDashboardOutputPanel";
 	private Dialog activitySearchDialog;
@@ -86,12 +84,6 @@ public class ResourceEditInitialsPage extends AbstractPageContainerManagedImpl i
 	protected void __listenPostConstruct__() {
 		try {
 			budgetaryActVersion = WebController.getInstance().getRequestParameterEntityAsParent(BudgetaryActVersion.class);
-			sections = EntityReader.getInstance().readMany(Section.class, new Arguments<Section>()
-					.setRepresentationArguments(new org.cyk.utility.__kernel__.representation.Arguments()
-							.setQueryExecutorArguments(new QueryExecutorArguments.Dto()
-									.setQueryIdentifier(SectionQuerier.QUERY_IDENTIFIER_READ_AGGREGATION_BY_BUDGETARY_ACT_VERSION_CODE_ORDER_BY_CODE_ASCENDING)
-									.addFilterField(SectionQuerier.PARAMETER_NAME_BUDGETARY_ACT_VERSION_CODE, budgetaryActVersion.getCode())
-									)));
 		} catch (Exception exception) {
 			LogHelper.log(exception, getClass());
 			return;
@@ -101,12 +93,12 @@ public class ResourceEditInitialsPage extends AbstractPageContainerManagedImpl i
 			return;
 		}
 		super.__listenPostConstruct__();
-		budgetSpecializationUnitCategories = EntityReader.getInstance().readMany(BudgetSpecializationUnitCategory.class,new Arguments<BudgetSpecializationUnitCategory>()
+		sections = EntityReader.getInstance().readMany(Section.class, new Arguments<Section>()
 				.setRepresentationArguments(new org.cyk.utility.__kernel__.representation.Arguments()
 						.setQueryExecutorArguments(new QueryExecutorArguments.Dto()
-								.setQueryIdentifier(BudgetSpecializationUnitCategoryQuerier.QUERY_IDENTIFIER_READ_BY_TYPES_CODES_ORDER_BY_CODE_ASCENDING)
-								.addFilterField(BudgetSpecializationUnitCategoryQuerier.PARAMETER_NAME_TYPES_CODES
-										, List.of(ci.gouv.dgbf.system.resources.server.persistence.entities.BudgetSpecializationUnitType.CODE_RESOURCE)))));
+								.setQueryIdentifier(SectionQuerier.QUERY_IDENTIFIER_READ_AGGREGATION_BY_BUDGETARY_ACT_VERSION_CODE_BY_GET_ALL_BY_GET_TREE_ORDER_BY_CODE_ASCENDING)
+								.addFilterField(SectionQuerier.PARAMETER_NAME_BUDGETARY_ACT_VERSION_CODE, budgetaryActVersion.getCode())
+								)));
 		
 		selectedResource = WebController.getInstance().getRequestParameterEntity(Resource.class);
 		if(selectedResource == null)
@@ -132,17 +124,9 @@ public class ResourceEditInitialsPage extends AbstractPageContainerManagedImpl i
 		activitySelectOne = SelectOneCombo.build(SelectOneCombo.FIELD_CHOICE_CLASS,Activity.class,SelectOneCombo.FIELD_LISTENER,new SelectOneCombo.Listener.AbstractImpl<Activity>() {
 			@Override
 			public Collection<Activity> computeChoices(AbstractInputChoice<Activity> inputChoice) {
-				if(budgetSpecializationUnitSelectOne.getValue() == null)
+				if(budgetSpecializationUnitSelectOne == null || budgetSpecializationUnitSelectOne.getValue() ==  null)
 					return null;
-				BudgetSpecializationUnit budgetSpecializationUnit = (BudgetSpecializationUnit) budgetSpecializationUnitSelectOne.getValue();
-				Collection<Activity> activities = EntityReader.getInstance().readMany(Activity.class,new Arguments<Activity>()
-						.setRepresentationArguments(new org.cyk.utility.__kernel__.representation.Arguments()
-								.setQueryExecutorArguments(new QueryExecutorArguments.Dto()
-										.setQueryIdentifier(ActivityByBudgetSpecializationUnitQuerier.QUERY_IDENTIFIER_READ_AGGREGATION_BY_BUDGET_SPECIALIZATION_UNITS_CODES_BY_BUDGETARY_ACT_VERSION_CODE)
-										.addFilterField(ActivityByBudgetSpecializationUnitQuerier.PARAMETER_NAME_BUDGET_SPECIALIZATION_UNITS_CODES, List.of(budgetSpecializationUnit.getCode()))
-										.addFilterField(ActivityByBudgetSpecializationUnitQuerier.PARAMETER_NAME_BUDGETARY_ACT_VERSION_CODE, budgetaryActVersion.getCode())
-										)));
-				return activities;
+				return ((BudgetSpecializationUnit)budgetSpecializationUnitSelectOne.getValue()).getActivities();
 			}
 			
 			@Override
@@ -191,18 +175,9 @@ public class ResourceEditInitialsPage extends AbstractPageContainerManagedImpl i
 		budgetSpecializationUnitSelectOne = SelectOneCombo.build(SelectOneCombo.FIELD_CHOICE_CLASS,BudgetSpecializationUnit.class,SelectOneCombo.FIELD_LISTENER,new SelectOneCombo.Listener.AbstractImpl<BudgetSpecializationUnit>() {
 			@Override
 			public Collection<BudgetSpecializationUnit> computeChoices(AbstractInputChoice<BudgetSpecializationUnit> inputChoice) {
-				if(sectionSelectOne == null || sectionSelectOne.getValue() ==  null) {
-					return EntityReader.getInstance().readMany(BudgetSpecializationUnit.class, new Arguments<BudgetSpecializationUnit>()
-							.setRepresentationArguments(new org.cyk.utility.__kernel__.representation.Arguments()
-									.setQueryExecutorArguments(new QueryExecutorArguments.Dto().setQueryIdentifier(BudgetSpecializationUnitQuerier.QUERY_IDENTIFIER_READ_ORDER_BY_CODE_ASCENDING))));
-				}else {			
-					return EntityReader.getInstance().readMany(BudgetSpecializationUnit.class,new Arguments<BudgetSpecializationUnit>()
-							.setRepresentationArguments(new org.cyk.utility.__kernel__.representation.Arguments()
-									.setQueryExecutorArguments(new QueryExecutorArguments.Dto().setQueryIdentifier(BudgetSpecializationUnitBySectionQuerier.QUERY_IDENTIFIER_READ_BY_SECTIONS_CODES_BY_TYPES_CODES)
-											.addFilterField(BudgetSpecializationUnitBySectionQuerier.PARAMETER_NAME_CODES, List.of( ((Section)sectionSelectOne.getValue()).getCode()))
-											.addFilterField(BudgetSpecializationUnitBySectionQuerier.PARAMETER_NAME_TYPES_CODES, List.of(ci.gouv.dgbf.system.resources.server.persistence.entities.BudgetSpecializationUnitType.CODE_RESOURCE ))
-											)));
-				}
+				if(sectionSelectOne == null || sectionSelectOne.getValue() ==  null)
+					return null;
+				return ((Section)sectionSelectOne.getValue()).getBudgetSpecializationUnits();
 			}
 			
 			@Override
@@ -233,9 +208,10 @@ public class ResourceEditInitialsPage extends AbstractPageContainerManagedImpl i
 			public void select(AbstractInputChoiceOne input, Section section) {
 				super.select(input, section);				
 				if(section == null) {
-					budgetSpecializationUnitCategoriesBySection = null;
+					
 				}else {
-					Collection<BudgetSpecializationUnitCategory> _budgetSpecializationUnitCategoriesBySection_ = EntityReader.getInstance().readMany(BudgetSpecializationUnitCategory.class,new Arguments<BudgetSpecializationUnitCategory>()
+					//budgetSpecializationUnitCategoriesBySection = section.getBudgetSpecializationUnitCategories();
+					/*Collection<BudgetSpecializationUnitCategory> _budgetSpecializationUnitCategoriesBySection_ = EntityReader.getInstance().readMany(BudgetSpecializationUnitCategory.class,new Arguments<BudgetSpecializationUnitCategory>()
 							.setRepresentationArguments(new org.cyk.utility.__kernel__.representation.Arguments()
 									.setQueryExecutorArguments(new QueryExecutorArguments.Dto()
 											.setQueryIdentifier(BudgetSpecializationUnitCategoryQuerier.QUERY_IDENTIFIER_READ_AGGREGATION_BY_SECTIONS_CODES_BY_TYPES_CODES_BY_BUDGETARY_ACT_VERSION_CODE_ORDER_BY_CODE_ASCENDING)
@@ -273,6 +249,7 @@ public class ResourceEditInitialsPage extends AbstractPageContainerManagedImpl i
 					}
 					budgetSpecializationUnitCategoryBySectionTotal.setAmounts(section.getAmounts());
 					budgetSpecializationUnitCategoriesBySection.add(budgetSpecializationUnitCategoryBySectionTotal);
+					*/
 				}
 				
 				if(budgetSpecializationUnitSelectOne != null) {
@@ -316,6 +293,7 @@ public class ResourceEditInitialsPage extends AbstractPageContainerManagedImpl i
 						updatables.add(resource);
 					}
 					if(CollectionHelper.isNotEmpty(updatables)) {
+						/*
 						updatables.forEach(resource -> {
 							if(resource.getAmounts(Boolean.TRUE).getInitial() == null)
 								resource.getAmounts(Boolean.TRUE).setInitial(0l);
@@ -334,6 +312,7 @@ public class ResourceEditInitialsPage extends AbstractPageContainerManagedImpl i
 						
 						resourcesDataTable.setColumnsFootersValuesFromMaster(activitySelectOne.getValue());
 						resourcesDataTable.updateColumnsFooters();
+						*/
 					}					
 				}
 			}

@@ -1,6 +1,7 @@
 package ci.gouv.dgbf.system.resources.client.controller.entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,5 +14,6 @@ public class BudgetSpecializationUnit extends AbstractNamableWithAmounts impleme
 	
 	private Section section;
 	private BudgetSpecializationUnitCategory category;
+	private Collection<Activity> activities;
 
 }
