@@ -64,7 +64,7 @@ public class ResourceCreatePage extends AbstractEntityEditPageContainerManagedIm
 									.setRepresentationArguments(new org.cyk.utility.__kernel__.representation.Arguments()
 											.setQueryExecutorArguments(new QueryExecutorArguments.Dto()
 													.setQueryIdentifier(EconomicNatureQuerier.QUERY_IDENTIFIER_READ_WHERE_ACTIVITY_REVENUE_ECONOMIC_NATURE_DOES_NOT_EXIST_AND_IDENTIFIER_DOES_START_BY_7_BY_ACTIVITIES_CODES_ORDER_BY_CODE_ASCENDING)
-													.addFilterField(EconomicNatureQuerier.PARAMETER_ACTIVITIES_CODES, List.of(activity.getIdentifier())))));
+													.addFilterField(EconomicNatureQuerier.PARAMETER_NAME_ACTIVITIES_CODES, List.of(activity.getIdentifier())))));
 							return costUnits;
 						}
 					});

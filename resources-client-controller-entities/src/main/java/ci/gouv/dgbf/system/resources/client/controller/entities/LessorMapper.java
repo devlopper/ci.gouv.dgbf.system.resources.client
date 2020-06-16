@@ -1,0 +1,10 @@
+package ci.gouv.dgbf.system.resources.client.controller.entities;
+import ci.gouv.dgbf.system.resources.server.representation.entities.LessorDto;
+import org.cyk.utility.__kernel__.controller.AbstractMapperSourceDestinationImpl;
+import org.mapstruct.Mapper;
+
+@Mapper
+public abstract class LessorMapper extends AbstractMapperSourceDestinationImpl<Lessor, LessorDto> {
+	private static final long serialVersionUID = 1L;
+    	
+}

@@ -52,11 +52,8 @@ import ci.gouv.dgbf.system.resources.client.controller.entities.BudgetSpecializa
 import ci.gouv.dgbf.system.resources.client.controller.entities.BudgetaryActVersion;
 import ci.gouv.dgbf.system.resources.client.controller.entities.Resource;
 import ci.gouv.dgbf.system.resources.client.controller.entities.Section;
+import ci.gouv.dgbf.system.resources.server.business.api.ActivityBusiness;
 import ci.gouv.dgbf.system.resources.server.business.api.ResourceBusiness;
-import ci.gouv.dgbf.system.resources.server.persistence.api.query.ActivityByBudgetSpecializationUnitQuerier;
-import ci.gouv.dgbf.system.resources.server.persistence.api.query.BudgetSpecializationUnitBySectionQuerier;
-import ci.gouv.dgbf.system.resources.server.persistence.api.query.BudgetSpecializationUnitCategoryQuerier;
-import ci.gouv.dgbf.system.resources.server.persistence.api.query.BudgetSpecializationUnitQuerier;
 import ci.gouv.dgbf.system.resources.server.persistence.api.query.ResourceByActivityQuerier;
 import ci.gouv.dgbf.system.resources.server.persistence.api.query.SectionQuerier;
 import lombok.Getter;
@@ -72,11 +69,11 @@ public class ResourceEditInitialsPage extends AbstractPageContainerManagedImpl i
 	private SelectOneCombo sectionSelectOne,budgetSpecializationUnitSelectOne,activitySelectOne;
 	private AutoComplete activityAutoComplete;
 	private DataTable resourcesDataTable;
-	private CommandButton saveCommandButton,showActivitySearchDialogCommandButton;
+	private CommandButton saveCommandButton,computeCommandButton,showActivitySearchDialogCommandButton;
 	private Activity selectedActivity;
 	private Resource selectedResource;
 	private Collection<Resource> resources;
-	private Map<String,Long> initialAdjustments = new HashMap<>();
+	private Map<String,Long> initialValues = new HashMap<>();
 	private String budgetSpecializationUnitCategoriesDashboardOutputPanelIdentifier ="budgetSpecializationUnitCategoriesDashboardOutputPanel";
 	private Dialog activitySearchDialog;
 	
@@ -256,9 +253,9 @@ public class ResourceEditInitialsPage extends AbstractPageContainerManagedImpl i
 					budgetSpecializationUnitSelectOne.setChoicesInitialized(Boolean.TRUE);
 					budgetSpecializationUnitSelectOne.updateChoices();
 					if(selectedResource != null)
-						budgetSpecializationUnitSelectOne.select(selectedResource.getActivity().getBudgetSpecializationUnit());
+						budgetSpecializationUnitSelectOne.selectBySystemIdentifier(selectedResource.getActivity().getBudgetSpecializationUnit().getIdentifier());
 					else if(selectedActivity != null)
-						budgetSpecializationUnitSelectOne.select(selectedActivity.getBudgetSpecializationUnit());
+						budgetSpecializationUnitSelectOne.selectBySystemIdentifier(selectedActivity.getBudgetSpecializationUnit().getIdentifier());
 					else
 						budgetSpecializationUnitSelectOne.selectFirstChoice();
 				}
@@ -284,16 +281,15 @@ public class ResourceEditInitialsPage extends AbstractPageContainerManagedImpl i
 				if(CollectionHelper.isNotEmpty(resources)) {
 					Collection<Resource> updatables = null;
 					for(Resource resource : resources) {
-						Long initialValue = initialAdjustments.get(resource.getIdentifier());
+						Long initialValue = initialValues.get(resource.getIdentifier());
 						Long adjustment = resource.getAmounts(Boolean.TRUE).getInitial();
-						if((initialValue == null && adjustment == null || initialValue != null && initialValue.equals(adjustment))							)							
+						if((initialValue == null && adjustment == null || initialValue != null && initialValue.equals(adjustment)))							
 							continue;
 						if(updatables == null)
 							updatables = new ArrayList<>();
 						updatables.add(resource);
 					}
-					if(CollectionHelper.isNotEmpty(updatables)) {
-						/*
+					if(CollectionHelper.isNotEmpty(updatables)) {					
 						updatables.forEach(resource -> {
 							if(resource.getAmounts(Boolean.TRUE).getInitial() == null)
 								resource.getAmounts(Boolean.TRUE).setInitial(0l);
@@ -305,15 +301,31 @@ public class ResourceEditInitialsPage extends AbstractPageContainerManagedImpl i
 							total = total + ValueHelper.defaultToIfBlank(resource.getAmounts(Boolean.TRUE).getInitial(),0l);
 						Long gap = ((Activity)activitySelectOne.getValue()).getAmounts().getInitial() - total;
 						((Activity)activitySelectOne.getValue()).getAmounts().setInitial(total);
-						BudgetSpecializationUnitCategory category = CollectionHelper.getFirst(budgetSpecializationUnitCategoriesBySection.stream().filter(i -> i.getIdentifier()!= null 
+						Collection<BudgetSpecializationUnitCategory> budgetSpecializationUnitCategories = ((Section)sectionSelectOne.getValue()).getBudgetSpecializationUnitCategories();
+						BudgetSpecializationUnitCategory category = CollectionHelper.getFirst(budgetSpecializationUnitCategories.stream().filter(i -> i.getIdentifier()!= null 
 								&& i.getIdentifier().equals((((BudgetSpecializationUnit)budgetSpecializationUnitSelectOne.getValue()).getCategory().getIdentifier()))).collect(Collectors.toList()));					
 						category.getAmounts(Boolean.TRUE).setInitial(category.getAmounts(Boolean.TRUE).getInitial()-gap);
-						budgetSpecializationUnitCategoryBySectionTotal.getAmounts(Boolean.TRUE).setInitial(budgetSpecializationUnitCategoryBySectionTotal.getAmounts(Boolean.TRUE).getInitial()-gap);
+						//budgetSpecializationUnitCategoryBySectionTotal.getAmounts(Boolean.TRUE).setInitial(budgetSpecializationUnitCategoryBySectionTotal.getAmounts(Boolean.TRUE).getInitial()-gap);
 						
 						resourcesDataTable.setColumnsFootersValuesFromMaster(activitySelectOne.getValue());
-						resourcesDataTable.updateColumnsFooters();
-						*/
+						resourcesDataTable.updateColumnsFooters();						
 					}					
+				}
+			}
+		});
+		
+		computeCommandButton = CommandButton.build(CommandButton.FIELD_VALUE,"Calculer",CommandButton.FIELD_ICON,"fa fa-floppy-o",CommandButton.FIELD_STYLE,"float:right;"
+				,CommandButton.FIELD_USER_INTERFACE_ACTION,UserInterfaceAction.EXECUTE_FUNCTION
+				,CommandButton.ConfiguratorImpl.FIELD_RUNNER_ARGUMENTS_SUCCESS_MESSAGE_ARGUMENTS_RENDER_TYPES,List.of(RenderType.GROWL));
+		computeCommandButton.addUpdates(":form:"+activitySelectOne.getIdentifier(),":form:"+budgetSpecializationUnitCategoriesDashboardOutputPanelIdentifier,":form:"+resourcesDataTable.getIdentifier());
+		computeCommandButton.setListener(new CommandButton.Listener.AbstractImpl() {
+			@Override
+			public void run(AbstractAction action) {
+				if(activitySelectOne != null && activitySelectOne.getValue() != null) {
+					Activity activity = (Activity)activitySelectOne.getValue();
+					activity.setBudgetaryActVersion(budgetaryActVersion);
+					EntitySaver.getInstance().save(Activity.class, new Arguments<Activity>().setUpdatables(List.of(activity))
+						.setRepresentationArguments(new org.cyk.utility.__kernel__.representation.Arguments().setActionIdentifier(ActivityBusiness.SAVE_INITIALS_FROM_COMPUTATION)));										
 				}
 			}
 		});
@@ -326,6 +338,7 @@ public class ResourceEditInitialsPage extends AbstractPageContainerManagedImpl i
 				,MapHelper.instantiate(Cell.FIELD_CONTROL,showActivitySearchDialogCommandButton,Cell.FIELD_WIDTH,1)
 				,MapHelper.instantiate(Cell.FIELD_CONTROL,resourcesDataTable,Cell.FIELD_WIDTH,12)
 				,MapHelper.instantiate(Cell.FIELD_CONTROL,saveCommandButton,Cell.FIELD_WIDTH,12)
+				,MapHelper.instantiate(Cell.FIELD_CONTROL,computeCommandButton,Cell.FIELD_WIDTH,12)
 				
 			));
 		
@@ -402,10 +415,10 @@ public class ResourceEditInitialsPage extends AbstractPageContainerManagedImpl i
 				return null;
 			List<Resource> list = super.read(lazyDataModel);
 			resources = list;
-			initialAdjustments.clear();
+			initialValues.clear();
 			if(CollectionHelper.isNotEmpty(resources))
 				list.forEach(resource -> {
-					initialAdjustments.put(resource.getIdentifier(), resource.getAmounts(Boolean.TRUE).getInitial());
+					initialValues.put(resource.getIdentifier(), resource.getAmounts(Boolean.TRUE).getInitial());
 				});
 			return list;
 		}
