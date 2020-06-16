@@ -30,7 +30,7 @@
 		    		</p:outputPanel>
     			</ui:define>
     			 			
-    			<ui:define name="cell9">    									
+    			<ui:define name="cell9">
   					<ui:decorate template="#{primefacesHelper.getModelTemplate(resourceEditInitialsPage.resourcesDataTable)}">
     					<ui:param name="dataTable" value="#{resourceEditInitialsPage.resourcesDataTable}"/>	    					
     					<ui:define name="columnsAfterRowIndexBodies1">
@@ -39,7 +39,24 @@
 		    					decimalPlaces="0" inputStyleClass="cyk-text-align-right">
 		    				</p:inputNumber>
 					    </ui:define>						    
-    				</ui:decorate>    	   							 					
+    				</ui:decorate>
+    			</ui:define>
+    			
+    			<ui:define name="cell10">
+    				<p:outputPanel id="#{resourceEditInitialsPage.commandOutputPanelIdentifier}">
+    					<ui:fragment rendered="#{resourceEditInitialsPage.activitySelectOne.value != null}">
+    						<ui:fragment rendered="#{resourceEditInitialsPage.activitySelectOne.value.computable}">
+	    						<ui:decorate template="#{primefacesHelper.getModelTemplate(resourceEditInitialsPage.computeCommandButton)}">
+			    					<ui:param name="commandButton" value="#{resourceEditInitialsPage.computeCommandButton}"/>	    									    
+			    				</ui:decorate>
+	    					</ui:fragment>
+	    					<ui:fragment rendered="#{not resourceEditInitialsPage.activitySelectOne.value.computable}">
+	    						<ui:decorate template="#{primefacesHelper.getModelTemplate(resourceEditInitialsPage.saveCommandButton)}">
+			    					<ui:param name="commandButton" value="#{resourceEditInitialsPage.saveCommandButton}"/>	    									    
+			    				</ui:decorate>
+	    					</ui:fragment>
+    					</ui:fragment>
+    				</p:outputPanel>	    				
     			</ui:define>
     		</ui:decorate>
     		

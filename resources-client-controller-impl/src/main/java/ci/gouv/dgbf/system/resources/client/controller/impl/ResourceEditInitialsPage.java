@@ -74,7 +74,7 @@ public class ResourceEditInitialsPage extends AbstractPageContainerManagedImpl i
 	private Resource selectedResource;
 	private Collection<Resource> resources;
 	private Map<String,Long> initialValues = new HashMap<>();
-	private String budgetSpecializationUnitCategoriesDashboardOutputPanelIdentifier ="budgetSpecializationUnitCategoriesDashboardOutputPanel";
+	private String budgetSpecializationUnitCategoriesDashboardOutputPanelIdentifier ="budgetSpecializationUnitCategoriesDashboardOutputPanel",commandOutputPanelIdentifier="commandOutputPanel";
 	private Dialog activitySearchDialog;
 	
 	@Override
@@ -142,7 +142,7 @@ public class ResourceEditInitialsPage extends AbstractPageContainerManagedImpl i
 				}						
 			}
 		});
-		activitySelectOne.enableValueChangeListener(List.of(resourcesDataTable));
+		activitySelectOne.enableValueChangeListener(List.of(resourcesDataTable,commandOutputPanelIdentifier));
 		
 		activitySearchDialog = Dialog.build(Dialog.FIELD_HEADER,"Recherche d'une activité",Dialog.FIELD_MODAL,Boolean.TRUE
 				,Dialog.ConfiguratorImpl.FIELD_COMMAND_BUTTONS_BUILDABLE,Boolean.FALSE);
@@ -197,7 +197,7 @@ public class ResourceEditInitialsPage extends AbstractPageContainerManagedImpl i
 				}
 			}
 		});
-		budgetSpecializationUnitSelectOne.enableValueChangeListener(List.of(activitySelectOne,resourcesDataTable));
+		budgetSpecializationUnitSelectOne.enableValueChangeListener(List.of(activitySelectOne,resourcesDataTable,commandOutputPanelIdentifier));
 		
 		sectionSelectOne = SelectOneCombo.build(SelectOneCombo.FIELD_CHOICE_CLASS,Section.class,SelectOneCombo.FIELD_CHOICES,sections
 				,SelectOneCombo.FIELD_LISTENER,new SelectOneCombo.Listener.AbstractImpl<Section>() {	
@@ -269,12 +269,14 @@ public class ResourceEditInitialsPage extends AbstractPageContainerManagedImpl i
 		}else {
 			sectionSelectOne.select((Section) CollectionHelper.getFirst(sectionSelectOne.getChoices().stream().filter(object -> FieldHelper.readBusinessIdentifier(object).equals("322")).collect(Collectors.toList())));
 		}
-		sectionSelectOne.enableValueChangeListener(List.of(budgetSpecializationUnitSelectOne,activitySelectOne,resourcesDataTable,budgetSpecializationUnitCategoriesDashboardOutputPanelIdentifier));
+		sectionSelectOne.enableValueChangeListener(List.of(budgetSpecializationUnitSelectOne,activitySelectOne,resourcesDataTable
+				,budgetSpecializationUnitCategoriesDashboardOutputPanelIdentifier,commandOutputPanelIdentifier));
 		
 		saveCommandButton = CommandButton.build(CommandButton.FIELD_VALUE,"Enregistrer",CommandButton.FIELD_ICON,"fa fa-floppy-o",CommandButton.FIELD_STYLE,"float:right;"
 				,CommandButton.FIELD_USER_INTERFACE_ACTION,UserInterfaceAction.EXECUTE_FUNCTION
 				,CommandButton.ConfiguratorImpl.FIELD_RUNNER_ARGUMENTS_SUCCESS_MESSAGE_ARGUMENTS_RENDER_TYPES,List.of(RenderType.GROWL));
-		saveCommandButton.addUpdates(":form:"+activitySelectOne.getIdentifier(),":form:"+budgetSpecializationUnitCategoriesDashboardOutputPanelIdentifier,":form:"+resourcesDataTable.getIdentifier());
+		saveCommandButton.addUpdates(":form:"+activitySelectOne.getIdentifier(),":form:"+budgetSpecializationUnitCategoriesDashboardOutputPanelIdentifier
+				,":form:"+resourcesDataTable.getIdentifier());
 		saveCommandButton.setListener(new CommandButton.Listener.AbstractImpl() {
 			@Override
 			public void run(AbstractAction action) {
@@ -317,7 +319,8 @@ public class ResourceEditInitialsPage extends AbstractPageContainerManagedImpl i
 		computeCommandButton = CommandButton.build(CommandButton.FIELD_VALUE,"Calculer",CommandButton.FIELD_ICON,"fa fa-floppy-o",CommandButton.FIELD_STYLE,"float:right;"
 				,CommandButton.FIELD_USER_INTERFACE_ACTION,UserInterfaceAction.EXECUTE_FUNCTION
 				,CommandButton.ConfiguratorImpl.FIELD_RUNNER_ARGUMENTS_SUCCESS_MESSAGE_ARGUMENTS_RENDER_TYPES,List.of(RenderType.GROWL));
-		computeCommandButton.addUpdates(":form:"+activitySelectOne.getIdentifier(),":form:"+budgetSpecializationUnitCategoriesDashboardOutputPanelIdentifier,":form:"+resourcesDataTable.getIdentifier());
+		computeCommandButton.addUpdates(":form:"+activitySelectOne.getIdentifier(),":form:"+budgetSpecializationUnitCategoriesDashboardOutputPanelIdentifier
+				,":form:"+resourcesDataTable.getIdentifier());
 		computeCommandButton.setListener(new CommandButton.Listener.AbstractImpl() {
 			@Override
 			public void run(AbstractAction action) {
@@ -337,8 +340,9 @@ public class ResourceEditInitialsPage extends AbstractPageContainerManagedImpl i
 				,MapHelper.instantiate(Cell.FIELD_CONTROL,OutputText.buildFromValue("Activité"),Cell.FIELD_WIDTH,2),MapHelper.instantiate(Cell.FIELD_CONTROL,activitySelectOne,Cell.FIELD_WIDTH,9)
 				,MapHelper.instantiate(Cell.FIELD_CONTROL,showActivitySearchDialogCommandButton,Cell.FIELD_WIDTH,1)
 				,MapHelper.instantiate(Cell.FIELD_CONTROL,resourcesDataTable,Cell.FIELD_WIDTH,12)
-				,MapHelper.instantiate(Cell.FIELD_CONTROL,saveCommandButton,Cell.FIELD_WIDTH,12)
-				,MapHelper.instantiate(Cell.FIELD_CONTROL,computeCommandButton,Cell.FIELD_WIDTH,12)
+				,MapHelper.instantiate(Cell.FIELD_IDENTIFIER,"save_compute",Cell.FIELD_WIDTH,12)
+				//,MapHelper.instantiate(Cell.FIELD_CONTROL,saveCommandButton,Cell.FIELD_WIDTH,12)
+				//,MapHelper.instantiate(Cell.FIELD_CONTROL,computeCommandButton,Cell.FIELD_WIDTH,12)
 				
 			));
 		
