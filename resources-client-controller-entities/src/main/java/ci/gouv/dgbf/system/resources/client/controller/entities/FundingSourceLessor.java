@@ -7,10 +7,19 @@ import org.cyk.utility.client.controller.data.AbstractDataIdentifiableSystemStri
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.Accessors;
 
-@Getter @Setter @NoArgsConstructor @Accessors(chain=true)
+@Getter @Setter @NoArgsConstructor //@Accessors(chain=true)
 public class FundingSourceLessor extends AbstractDataIdentifiableSystemStringImpl implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
+	private FundingSource fundingSource;
+	//private Lessor lessor;
+	private String lessorIdentifier;
+	private EconomicNature economicNature;
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return fundingSource+" | "+lessorIdentifier+" | "+economicNature;
+	}
 }
