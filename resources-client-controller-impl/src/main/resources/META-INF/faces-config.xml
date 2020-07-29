@@ -23,5 +23,11 @@
 			<to-view-id>/private/resource/editinitials.jsf</to-view-id>
 			<redirect />
 		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>fundingSourceLessorEditEconomicNaturesView</from-outcome>
+			<to-view-id>/private/fundingsourcelessor/editeconomicnatures.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
 	</navigation-rule>
 </faces-config>

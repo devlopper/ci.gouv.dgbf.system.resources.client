@@ -50,7 +50,7 @@
 			    					<ui:param name="commandButton" value="#{resourceEditInitialsPage.computeCommandButton}"/>	    									    
 			    				</ui:decorate>
 	    					</ui:fragment>
-	    					<ui:fragment rendered="#{not resourceEditInitialsPage.activitySelectOne.value.computable}">
+	    					<ui:fragment rendered="#{not resourceEditInitialsPage.activitySelectOne.value.computable and not empty resourceEditInitialsPage.resourcesDataTable.value.list}">
 	    						<ui:decorate template="#{primefacesHelper.getModelTemplate(resourceEditInitialsPage.saveCommandButton)}">
 			    					<ui:param name="commandButton" value="#{resourceEditInitialsPage.saveCommandButton}"/>	    									    
 			    				</ui:decorate>

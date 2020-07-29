@@ -18,6 +18,7 @@ public class MenuBuilderMapInstantiatorImpl extends org.cyk.utility.client.contr
 				.addChild(
 						__inject__(MenuItemBuilder.class).setCommandableName("Saisir les montants").setCommandableNavigationIdentifier("resourceEditInitialsView").setCommandableIcon(Icon.PENCIL)
 						,__inject__(MenuItemBuilder.class).setCommandableName("Sélectionner une version").setCommandableNavigationIdentifier("budgetaryActVersionSelectView").setCommandableIcon(Icon.FILE)
+						,__inject__(MenuItemBuilder.class).setCommandableName("Saisir les comptes bailleurs").setCommandableNavigationIdentifier("fundingSourceLessorEditEconomicNaturesView").setCommandableIcon(Icon.BANK)
 						)
 				);		
 	}	

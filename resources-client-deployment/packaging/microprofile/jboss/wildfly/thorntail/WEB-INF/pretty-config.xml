@@ -12,5 +12,10 @@
 		<pattern value="/resource/saisie/initial" />
 		<view-id value="/private/resource/editinitials.jsf" />
 	</url-mapping>
+	
+	<url-mapping id="edit_fundingsourcelessor_economicnatures">
+		<pattern value="/saisir_compte_bailleur" />
+		<view-id value="/private/fundingsourcelessor/editeconomicnatures.jsf" />
+	</url-mapping>
 
 </pretty-config>
